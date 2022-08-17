@@ -10,6 +10,12 @@ const config = {
   width: 1280, // width of Canvas (should take from background size)
   height: 720, // height of Canvas
   scene: [BootScene, PreloadScene, StartScene, GameScene], // array of game scenes. Queue is important
+  physics: {
+    default: 'arcade',
+    arcade: {
+      debug: false,
+    },
+  },
 };
 
 new Phaser.Game(config);
