@@ -6,7 +6,14 @@ class GameScene extends Phaser.Scene {
   }
 
   create() {
-    console.log('Game has been started!');
+    this.createBackground();
+
+    this.add
+      .sprite(150, this.game.config.height / 2, 'dragon', 'dragon1')
+      .setOrigin(0, 0);
+  }
+
+  createBackground() {
     this.add.sprite(0, 0, 'bg').setOrigin(0, 0);
   }
 }
