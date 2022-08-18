@@ -16,11 +16,17 @@ class GameScene extends Phaser.Scene {
   }
 
   update() {
+    const { width } = this.game.config;
+    // Checking and reset tilePosition to avoid of big numbers
+    if (this.bg.tilePositionX >= width * 1.6) this.bg.tilePositionX = 0;
     this.player.move();
+    this.bg.tilePositionX += 0.6;
   }
 
   createBackground() {
-    this.add.sprite(0, 0, 'bg').setOrigin(0, 0);
+    const { width, height } = this.game.config;
+
+    this.bg = this.add.tileSprite(0, 0, width, height, 'bg').setOrigin(0, 0);
   }
 }
 
