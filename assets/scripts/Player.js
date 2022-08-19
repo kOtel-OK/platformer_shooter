@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
 class Player extends Phaser.GameObjects.Sprite {
-  velocity = 250;
+  velocity = 350;
 
   constructor(scene) {
     super(scene, 150, scene.game.config.height / 2, 'dragon', 'dragon1');
