@@ -23,12 +23,12 @@ class StartScene extends Phaser.Scene {
     const startText = this.add
       .text(0, 0, 'Tap to Start', {
         fontFamily: '"Press Start 2P"',
-        color: '#000',
+        color: '#fff',
         fontSize: '40px',
       })
       .setAlign('center');
 
-    startText.setPosition(sceneWidth / 2, sceneHeight / 2).setOrigin(0.5, 0.5);
+    startText.setPosition(sceneWidth / 2, 600).setOrigin(0.5, 0.5);
   }
 
   playGame() {

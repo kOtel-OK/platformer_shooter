@@ -6,17 +6,28 @@ class Enemy extends Phaser.GameObjects.Sprite {
     this.init();
   }
 
-  static generate(scene) {
+  static generateAttr(scene) {
     const { width: sceneWidth, height: sceneHeight } = scene.game.config;
     const enemyWidth = scene.textures.list.enemy.source[0].width;
     const enemyHeight = scene.textures.list.enemy.source[0].height;
 
-    const x = sceneWidth + enemyWidth / 4;
-    const y = Phaser.Math.Between(enemyHeight, sceneHeight - enemyHeight);
+    return {
+      x: sceneWidth + enemyWidth / 4,
+      y: Phaser.Math.Between(enemyHeight, sceneHeight - enemyHeight),
+      frame: Phaser.Math.Between(1, 4),
+    };
+  }
 
-    const frame = Phaser.Math.Between(1, 4);
+  static generate(scene) {
+    const enemyAttrs = Enemy.generateAttr(scene);
 
-    return new Enemy(scene, x, y, 'enemy', `enemy${frame}`);
+    return new Enemy(
+      scene,
+      enemyAttrs.x,
+      enemyAttrs.y,
+      'enemy',
+      `enemy${enemyAttrs.frame}`
+    );
   }
 
   init() {
@@ -24,6 +35,16 @@ class Enemy extends Phaser.GameObjects.Sprite {
     this.scene.physics.add.existing(this);
     this.body.enable = true;
     this.scene.events.on('update', this.update, this);
+  }
+
+  reset(scene) {
+    const enemyAttrs = Enemy.generateAttr(scene);
+
+    this.x = enemyAttrs.x;
+    this.y = enemyAttrs.y;
+
+    this.setFrame(`enemy${enemyAttrs.frame}`);
+    this.setAlive(true);
   }
 
   update() {
@@ -56,7 +77,7 @@ class Enemy extends Phaser.GameObjects.Sprite {
         velocity = -200;
         break;
       case 4:
-        velocity = -250;
+        velocity = -350;
         break;
     }
     return velocity;
