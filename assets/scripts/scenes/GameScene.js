@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import Player from '../Player';
 import Enemies from '../Enemies';
+import Fire from '../Fire';
 
 class GameScene extends Phaser.Scene {
   constructor() {
@@ -15,6 +16,7 @@ class GameScene extends Phaser.Scene {
     this.createBackground();
     this.player = new Player(this);
     this.enemies = new Enemies(this);
+    this.fire = Fire.generate(this);
   }
 
   update() {
