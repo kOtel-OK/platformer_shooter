@@ -16,7 +16,7 @@ class GameScene extends Phaser.Scene {
     this.createBackground();
     this.player = new Player(this);
     this.enemies = new Enemies(this);
-    this.fire = Fire.generate(this);
+    this.fire = new Fire(this);
   }
 
   update() {
@@ -25,6 +25,7 @@ class GameScene extends Phaser.Scene {
     if (this.bg.tilePositionX >= width * 1.6) this.bg.tilePositionX = 0;
 
     this.player.move();
+    this.fire.move();
     this.bg.tilePositionX += 0.6;
   }
 
