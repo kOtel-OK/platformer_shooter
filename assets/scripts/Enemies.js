@@ -8,7 +8,7 @@ class Enemies extends Phaser.Physics.Arcade.Group {
     this.enemiesCreated = 0;
     this.enemiesAmountMax = 10;
     this.timeoutEvent = this.scene.time.addEvent({
-      delay: 1500,
+      delay: 2000,
       loop: true,
       callback: this.onTimerTick,
       callbackScope: this,
@@ -26,6 +26,7 @@ class Enemies extends Phaser.Physics.Arcade.Group {
 
   createEnemy() {
     let enemy = this.getFirstDead();
+    let bullet;
 
     if (!enemy) {
       enemy = Enemy.generate(this.scene);
@@ -35,6 +36,7 @@ class Enemies extends Phaser.Physics.Arcade.Group {
     }
 
     this.enemiesCreated++;
+
     enemy.move();
   }
 }

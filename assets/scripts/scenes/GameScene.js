@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import Player from '../Player';
 import Enemies from '../Enemies';
 import Fire from '../Fire';
+// import Bullet from '../Bullet';
 
 class GameScene extends Phaser.Scene {
   constructor() {

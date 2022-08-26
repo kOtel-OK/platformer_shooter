@@ -1,9 +1,16 @@
-import Phaser from 'phaser';
+import EnemiesGlobal from './EnemiesGlobal';
+import Bullet from './Bullet';
 
-class Enemy extends Phaser.GameObjects.Sprite {
+class Enemy extends EnemiesGlobal {
   constructor(scene, x, y, key, frame) {
     super(scene, x, y, key, frame);
-    this.init();
+
+    this.bulletTimerEvent = this.scene.time.addEvent({
+      delay: 2000,
+      loop: true,
+      callback: this.onBulletTimerTick,
+      callbackScope: this,
+    });
   }
 
   static generateAttr(scene) {
@@ -30,11 +37,19 @@ class Enemy extends Phaser.GameObjects.Sprite {
     );
   }
 
-  init() {
-    this.scene.add.existing(this);
-    this.scene.physics.add.existing(this);
-    this.body.enable = true;
-    this.scene.events.on('update', this.update, this);
+  onBulletTimerTick() {
+    if (!this.active) {
+      this.bulletTimerEvent.remove();
+      this.bullet.setAlive(false);
+    } else {
+      this.bullet = Bullet.generate(
+        this.scene,
+        this.body.x,
+        this.body.y + this.body.height / 2
+      );
+      // addition enemy speed to default bullet speed
+      this.bullet.move(this.setObjectSpeed());
+    }
   }
 
   reset(scene) {
@@ -51,40 +66,6 @@ class Enemy extends Phaser.GameObjects.Sprite {
     if (this.active && this.body.x < -this.width) {
       this.setAlive(false);
     }
-  }
-
-  setAlive(status) {
-    // deactivating of physics body
-    this.body.enable = status; // this - current game object
-    // hide game object
-    this.setVisible(status);
-    // set to inactive
-    this.setActive(status);
-  }
-
-  setEnemySpeed() {
-    const frame = Number(this.frame.name.slice(-1));
-    let velocity;
-
-    switch (frame) {
-      case 1:
-        velocity = -100;
-        break;
-      case 2:
-        velocity = -150;
-        break;
-      case 3:
-        velocity = -200;
-        break;
-      case 4:
-        velocity = -350;
-        break;
-    }
-    return velocity;
-  }
-
-  move() {
-    this.body.setVelocityX(this.setEnemySpeed());
   }
 }
 

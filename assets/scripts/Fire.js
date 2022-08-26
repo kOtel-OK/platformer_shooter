@@ -26,10 +26,7 @@ class Fire extends Player {
   }
 
   move() {
-    if (this.x > this.scene.game.config.width + this.width) {
-      this.reset();
-    }
-
+    if (this.x > this.scene.game.config.width + this.width) this.reset();
     if (this.isFired) return;
 
     super.move();
