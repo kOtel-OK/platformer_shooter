@@ -2,7 +2,6 @@ import Phaser from 'phaser';
 import Player from '../Player';
 import Enemies from '../Enemies';
 import Fire from '../Fire';
-// import Bullet from '../Bullet';
 
 class GameScene extends Phaser.Scene {
   constructor() {
@@ -18,6 +17,7 @@ class GameScene extends Phaser.Scene {
     this.player = new Player(this);
     this.enemies = new Enemies(this);
     this.fire = new Fire(this);
+    this.addOverlap();
   }
 
   update() {
@@ -28,6 +28,23 @@ class GameScene extends Phaser.Scene {
     this.player.move();
     this.fire.move();
     this.bg.tilePositionX += 0.6;
+  }
+
+  addOverlap() {
+    this.physics.add.overlap(
+      this.fire,
+      this.enemies,
+      this.onOverlap,
+      null,
+      this
+    );
+  }
+
+  onOverlap(source, target) {
+    if (source.isFired) {
+      target.setAlive(false);
+      this.fire.reset();
+    }
   }
 
   createBackground() {

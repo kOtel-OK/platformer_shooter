@@ -39,7 +39,6 @@ class Enemy extends EnemiesGlobal {
 
   onBulletTimerTick() {
     if (!this.active) {
-      this.bulletTimerEvent.remove();
       this.bullet.setAlive(false);
     } else {
       this.bullet = Bullet.generate(

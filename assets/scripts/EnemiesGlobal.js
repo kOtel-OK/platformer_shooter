@@ -20,6 +20,9 @@ class EnemiesGlobal extends Phaser.GameObjects.Sprite {
     this.setVisible(status);
     // set to inactive
     this.setActive(status);
+
+    // paused timer if object is inactive
+    if (this.bulletTimerEvent) this.bulletTimerEvent.paused = !status;
   }
 
   setObjectSpeed() {
