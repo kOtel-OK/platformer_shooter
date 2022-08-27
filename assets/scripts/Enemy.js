@@ -46,7 +46,8 @@ class Enemy extends EnemiesGlobal {
         this.body.x,
         this.body.y + this.body.height / 2
       );
-      // addition enemy speed to default bullet speed
+
+      this.scene.bulletsGroup.add(this.bullet); // Adding each bullet to the group
       this.bullet.move(this.setObjectSpeed());
     }
   }

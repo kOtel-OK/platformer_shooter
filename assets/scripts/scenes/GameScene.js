@@ -10,6 +10,7 @@ class GameScene extends Phaser.Scene {
 
   init() {
     this.cursors = this.input.keyboard.createCursorKeys();
+    this.bulletsGroup = this.physics.add.group(); // Creating group for bullets
   }
 
   create() {
@@ -22,7 +23,7 @@ class GameScene extends Phaser.Scene {
 
   update() {
     const { width } = this.game.config;
-    // Checking and reset tilePosition to avoid of big numbers
+
     if (this.bg.tilePositionX >= width * 1.6) this.bg.tilePositionX = 0;
 
     this.player.move();
@@ -38,13 +39,43 @@ class GameScene extends Phaser.Scene {
       null,
       this
     );
+
+    this.physics.add.overlap(
+      this.enemies,
+      this.player,
+      this.onObjectsOverlap,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.bulletsGroup,
+      this.player,
+      this.onBulletOverlap,
+      null,
+      this
+    );
   }
 
+  // Overlap fire with object
   onOverlap(source, target) {
     if (source.isFired) {
       target.setAlive(false);
       this.fire.reset();
     }
+  }
+
+  // Overlap player with target
+  onObjectsOverlap(source, target) {
+    target.setAlive(false);
+    target.setAlive.call(source, false);
+    target.setAlive.call(this.fire, false);
+  }
+
+  // Overlap player with bullet
+  onBulletOverlap(source, target) {
+    target.setAlive.call(source, false);
+    target.setAlive.call(this.fire, false);
   }
 
   createBackground() {
