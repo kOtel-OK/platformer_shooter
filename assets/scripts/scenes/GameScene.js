@@ -18,13 +18,19 @@ class GameScene extends Phaser.Scene {
     this.player = new Player(this);
     this.enemies = new Enemies(this);
     this.fire = new Fire(this);
+    this.createCompleteEvents();
     this.addOverlap();
   }
 
   update() {
     const { width } = this.game.config;
+    const created = this.enemies.enemiesAmountMax;
 
     if (this.bg.tilePositionX >= width * 1.6) this.bg.tilePositionX = 0;
+
+    // If no enemie on the scene - calling enemiesdestroyed event
+    if (this.enemies.enemiesDestroyed === created && created !== 0)
+      this.enemies.emit('enemiesdestroyed');
 
     this.player.move();
     this.fire.move();
@@ -61,6 +67,7 @@ class GameScene extends Phaser.Scene {
   onOverlap(source, target) {
     if (source.isFired) {
       target.setAlive(false);
+      this.enemies.enemiesDestroyed++;
       this.fire.reset();
     }
   }
@@ -70,12 +77,24 @@ class GameScene extends Phaser.Scene {
     target.setAlive(false);
     target.setAlive.call(source, false);
     target.setAlive.call(this.fire, false);
+    this.player.emit('killed');
   }
 
   // Overlap player with bullet
   onBulletOverlap(source, target) {
     target.setAlive.call(source, false);
     target.setAlive.call(this.fire, false);
+    this.player.emit('killed');
+  }
+
+  createCompleteEvents() {
+    this.player.once('killed', this.onComplete, this);
+    this.enemies.once('enemiesdestroyed', this.onComplete, this);
+  }
+
+  onComplete() {
+    this.scene.start('Start');
+    console.log('Game Over');
   }
 
   createBackground() {

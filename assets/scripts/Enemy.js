@@ -47,7 +47,8 @@ class Enemy extends EnemiesGlobal {
         this.body.y + this.body.height / 2
       );
 
-      this.scene.bulletsGroup.add(this.bullet); // Adding each bullet to the group
+      // Adding each bullet to the group
+      this.scene.bulletsGroup.add(this.bullet);
       this.bullet.move(this.setObjectSpeed());
     }
   }
@@ -65,6 +66,7 @@ class Enemy extends EnemiesGlobal {
   update() {
     if (this.active && this.body.x < -this.width) {
       this.setAlive(false);
+      this.scene.enemies.enemiesDestroyed++;
     }
   }
 }

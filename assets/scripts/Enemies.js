@@ -3,10 +3,12 @@ import Enemy from './Enemy';
 
 class Enemies extends Phaser.Physics.Arcade.Group {
   constructor(scene) {
-    super();
+    super(scene.physics.world, scene);
     this.scene = scene;
     this.enemiesCreated = 0;
     this.enemiesAmountMax = 10;
+    this.enemiesDestroyed = 0;
+
     this.timeoutEvent = this.scene.time.addEvent({
       delay: 2000,
       loop: true,
@@ -35,7 +37,6 @@ class Enemies extends Phaser.Physics.Arcade.Group {
     }
 
     this.enemiesCreated++;
-
     enemy.move();
   }
 }

@@ -16,18 +16,21 @@ class Player extends Phaser.GameObjects.Sprite {
   }
 
   move() {
+    const { top, bottom, left, right } = this.scene.player.getBounds();
+    const { height, width } = this.scene.game.config;
+
     this.body.setVelocity(0);
 
-    if (this.scene.cursors.up.isDown) {
+    if (this.scene.cursors.up.isDown && top > 0) {
       this.body.setVelocityY(-this.velocity);
     }
-    if (this.scene.cursors.down.isDown) {
+    if (this.scene.cursors.down.isDown && bottom < height) {
       this.body.setVelocityY(this.velocity);
     }
-    if (this.scene.cursors.left.isDown) {
+    if (this.scene.cursors.left.isDown && left > 0) {
       this.body.setVelocityX(-this.velocity);
     }
-    if (this.scene.cursors.right.isDown) {
+    if (this.scene.cursors.right.isDown && right < width) {
       this.body.setVelocityX(this.velocity);
     }
   }
