@@ -7,8 +7,12 @@ class StartScene extends Phaser.Scene {
 
   preload() {}
 
-  create() {
+  create(data) {
     this.createBackground();
+    if (data.totalScore !== undefined) {
+      this.createTotals(data);
+    }
+
     this.createStartGameText();
     this.playGame();
   }
@@ -29,6 +33,30 @@ class StartScene extends Phaser.Scene {
       .setAlign('center');
 
     startText.setPosition(sceneWidth / 2, 600).setOrigin(0.5, 0.5);
+  }
+
+  createTotals(data) {
+    const { width, height } = this.game.config;
+
+    const textTitle = data.gameComplete ? 'Level Completed' : 'Game Over';
+    const textScore = data.totalScore;
+    const textStyle = {
+      fontFamily: '"Press Start 2P"',
+      color: '#fff',
+      fontSize: '30px',
+    };
+
+    this.add
+      .graphics()
+      .fillStyle(0x000000, 0.5)
+      .fillRoundedRect(width / 2 - 300, height / 2 - 200, 600, 400);
+
+    this.add
+      .text(width / 2, height / 2 - 100, textTitle, textStyle)
+      .setOrigin(0.5);
+    this.add
+      .text(width / 2, height / 2, `Score: ${textScore}`, textStyle)
+      .setOrigin(0.5);
   }
 
   playGame() {

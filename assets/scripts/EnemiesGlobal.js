@@ -25,34 +25,38 @@ class EnemiesGlobal extends Phaser.GameObjects.Sprite {
     if (this.bulletTimerEvent) this.bulletTimerEvent.paused = !status;
   }
 
-  setObjectSpeed() {
+  /**
+   * Set ratio (velocity, scores) for different type of Enemies objects
+   * @returns {number} Returns ratio
+   */
+  setObjectRatio() {
     const frame = Number(this.frame.name.slice(-1));
-    let velocity;
+    let ratio;
     // for bullet moving
     if (!frame) {
-      velocity = 200;
-      return -velocity;
+      ratio = 200;
+      return ratio;
     }
 
     switch (frame) {
       case 1:
-        velocity = 100;
+        ratio = 100;
         break;
       case 2:
-        velocity = 150;
+        ratio = 150;
         break;
       case 3:
-        velocity = 200;
+        ratio = 200;
         break;
       case 4:
-        velocity = 350;
+        ratio = 350;
         break;
     }
-    return -velocity;
+    return ratio;
   }
 
   move(velocity = 0) {
-    this.body.setVelocityX(velocity + this.setObjectSpeed());
+    this.body.setVelocityX(velocity + -this.setObjectRatio());
   }
 }
 

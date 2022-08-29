@@ -9,12 +9,14 @@ class GameScene extends Phaser.Scene {
   }
 
   init() {
+    this.score = 0;
     this.cursors = this.input.keyboard.createCursorKeys();
     this.bulletsGroup = this.physics.add.group(); // Creating group for bullets
   }
 
   create() {
     this.createBackground();
+    this.createScoreText();
     this.player = new Player(this);
     this.enemies = new Enemies(this);
     this.fire = new Fire(this);
@@ -30,7 +32,7 @@ class GameScene extends Phaser.Scene {
 
     // If no enemie on the scene - calling enemiesdestroyed event
     if (this.enemies.enemiesDestroyed === created && created !== 0)
-      this.enemies.emit('enemiesdestroyed');
+      this.enemies.emit('enemiesdestroyed', true);
 
     this.player.move();
     this.fire.move();
@@ -67,7 +69,12 @@ class GameScene extends Phaser.Scene {
   onOverlap(source, target) {
     if (source.isFired) {
       target.setAlive(false);
+
+      // Adding destroyed enemy to the enemiesDestroyed counter
       this.enemies.enemiesDestroyed++;
+      this.score += target.setObjectRatio();
+      this.scoreText.setText(`Score: ${this.score}`);
+
       this.fire.reset();
     }
   }
@@ -77,30 +84,40 @@ class GameScene extends Phaser.Scene {
     target.setAlive(false);
     target.setAlive.call(source, false);
     target.setAlive.call(this.fire, false);
-    this.player.emit('killed');
+    this.events.emit('killed', false);
   }
 
   // Overlap player with bullet
   onBulletOverlap(source, target) {
     target.setAlive.call(source, false);
     target.setAlive.call(this.fire, false);
-    this.player.emit('killed');
+    this.events.emit('killed', false);
   }
 
   createCompleteEvents() {
-    this.player.once('killed', this.onComplete, this);
+    this.events.once('killed', this.onComplete, this);
     this.enemies.once('enemiesdestroyed', this.onComplete, this);
   }
 
-  onComplete() {
-    this.scene.start('Start');
-    console.log('Game Over');
+  onComplete(success) {
+    this.scene.start('Start', {
+      totalScore: this.score,
+      gameComplete: success,
+    });
   }
 
   createBackground() {
     const { width, height } = this.game.config;
 
     this.bg = this.add.tileSprite(0, 0, width, height, 'bg').setOrigin(0, 0);
+  }
+
+  createScoreText() {
+    this.scoreText = this.add.text(20, 20, `Score: ${this.score}`, {
+      fontFamily: '"Press Start 2P"',
+      color: '#fff',
+      fontSize: '30px',
+    });
   }
 }
 
