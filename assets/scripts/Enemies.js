@@ -6,7 +6,7 @@ class Enemies extends Phaser.Physics.Arcade.Group {
     super(scene.physics.world, scene);
     this.scene = scene;
     this.enemiesCreated = 0;
-    this.enemiesAmountMax = 5;
+    this.enemiesAmountMax = 20;
     this.enemiesDestroyed = 0;
 
     this.timeoutEvent = this.scene.time.addEvent({

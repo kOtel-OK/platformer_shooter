@@ -7,6 +7,7 @@ class Player extends Phaser.GameObjects.Sprite {
     super(scene, 150, scene.game.config.height / 2, 'dragon', 'dragon1');
     this.scene = scene;
     this.init();
+    this.animate();
   }
 
   init() {
@@ -33,6 +34,25 @@ class Player extends Phaser.GameObjects.Sprite {
     if (this.scene.cursors.right.isDown && right < width) {
       this.body.setVelocityX(this.velocity);
     }
+  }
+
+  animate() {
+    // generate set of texture frames
+    const frames = this.scene.anims.generateFrameNames('dragon', {
+      prefix: 'dragon',
+      start: 1,
+      end: 6,
+    });
+
+    // create a new animation based on the frames set
+    this.scene.anims.create({
+      key: 'fly',
+      frames,
+      frameRate: 20,
+      repeat: -1,
+    });
+    // run animation
+    this.play('fly');
   }
 }
 
