@@ -22,6 +22,7 @@ class GameScene extends Phaser.Scene {
     this.fire = new Fire(this);
     this.createCompleteEvents();
     this.addOverlap();
+    this.boomAnimate();
   }
 
   update() {
@@ -68,14 +69,21 @@ class GameScene extends Phaser.Scene {
   // Overlap fire with object
   onOverlap(source, target) {
     if (source.isFired) {
-      target.setAlive(false);
-
-      // Adding destroyed enemy to the enemiesDestroyed counter
-      this.enemies.enemiesDestroyed++;
-      this.score += target.setObjectRatio();
-      this.scoreText.setText(`Score: ${this.score}`);
-
       this.fire.reset();
+      target.play('booms');
+
+      target.once(
+        'animationcomplete',
+        function () {
+          // Adding destroyed enemy to the enemiesDestroyed counter
+          this.enemies.enemiesDestroyed++;
+          this.score += target.setObjectRatio();
+          this.scoreText.setText(`Score: ${this.score}`);
+          target.setAlive(false);
+          target.setTexture('enemy');
+        },
+        this
+      );
     }
   }
 
@@ -103,6 +111,21 @@ class GameScene extends Phaser.Scene {
     this.scene.start('Start', {
       totalScore: this.score,
       gameComplete: success,
+    });
+  }
+
+  boomAnimate() {
+    const frames = this.anims.generateFrameNames('boom', {
+      prefix: 'boom',
+      start: 1,
+      end: 4,
+    });
+
+    this.anims.create({
+      key: 'booms',
+      frames,
+      frameRate: 15,
+      repeat: 0,
     });
   }
 

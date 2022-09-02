@@ -6,6 +6,8 @@ import bullet from '../../sprites/bullet.png';
 import dragonJSON from '../../sprites/dragon.json';
 import enemyPNG from '../../sprites/enemy.png';
 import enemyJSON from '../../sprites/enemy.json';
+import boomPNG from '../../sprites/boom.png';
+import boomJSON from '../../sprites/boom.json';
 
 class PreloadScene extends Phaser.Scene {
   constructor() {
@@ -18,6 +20,7 @@ class PreloadScene extends Phaser.Scene {
     this.load.image('bullet', bullet);
     this.load.atlas('dragon', dragonPNG, dragonJSON);
     this.load.atlas('enemy', enemyPNG, enemyJSON);
+    this.load.atlas('boom', boomPNG, boomJSON);
   }
 
   create() {
