@@ -60,7 +60,6 @@ class Enemy extends EnemiesGlobal {
     this.y = enemyAttrs.y;
 
     this.setFrame(`enemy${enemyAttrs.frame}`);
-    // console.log(this);
     this.setAlive(true);
   }
 

@@ -13,10 +13,12 @@
   "author": "Roman K",
   "license": "ISC",
   "dependencies": {
+    "core-js": "^3.25.0",
+    "parcel": "^2.7.0",
     "phaser": "^3.55.2",
     "webfontloader": "^1.6.28"
   },
   "devDependencies": {
-    "parcel": "^2.7.0"
+    "@parcel/resolver-glob": "^2.7.0"
   }
 }

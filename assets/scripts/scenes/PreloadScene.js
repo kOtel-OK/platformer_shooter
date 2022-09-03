@@ -8,6 +8,7 @@ import enemyPNG from '../../sprites/enemy.png';
 import enemyJSON from '../../sprites/enemy.json';
 import boomPNG from '../../sprites/boom.png';
 import boomJSON from '../../sprites/boom.json';
+import sounds from 'url:../../sounds/*.mp3';
 
 class PreloadScene extends Phaser.Scene {
   constructor() {
@@ -21,6 +22,9 @@ class PreloadScene extends Phaser.Scene {
     this.load.atlas('dragon', dragonPNG, dragonJSON);
     this.load.atlas('enemy', enemyPNG, enemyJSON);
     this.load.atlas('boom', boomPNG, boomJSON);
+    for (let key in sounds) {
+      this.load.audio(key, sounds[key]);
+    }
   }
 
   create() {

@@ -16,6 +16,11 @@ class GameScene extends Phaser.Scene {
 
   create() {
     this.createBackground();
+
+    if (!this.mainTheme) {
+      this.createSounds();
+    }
+
     this.createScoreText();
     this.player = new Player(this);
     this.enemies = new Enemies(this);
@@ -70,6 +75,7 @@ class GameScene extends Phaser.Scene {
   onOverlap(source, target) {
     if (source.isFired) {
       this.fire.reset();
+      this.sound.play('boom');
       target.play('booms');
 
       target.once(
@@ -97,6 +103,8 @@ class GameScene extends Phaser.Scene {
 
   // Overlap player with bullet
   onBulletOverlap(source, target) {
+    this.sound.play('boom');
+
     target.setAlive.call(source, false);
     target.setAlive.call(this.fire, false);
     this.events.emit('killed', false);
@@ -124,7 +132,7 @@ class GameScene extends Phaser.Scene {
     this.anims.create({
       key: 'booms',
       frames,
-      frameRate: 15,
+      frameRate: 10,
       repeat: 0,
     });
   }
@@ -133,6 +141,15 @@ class GameScene extends Phaser.Scene {
     const { width, height } = this.game.config;
 
     this.bg = this.add.tileSprite(0, 0, width, height, 'bg').setOrigin(0, 0);
+  }
+
+  createSounds() {
+    this.mainTheme = this.sound.add('theme');
+    this.sound.add('boom');
+
+    this.sound.play('theme', {
+      loop: true,
+    });
   }
 
   createScoreText() {
